@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sanithma Withanage - Projects</title>
+<meta name="description" content="Projects by Sanithma Withanage - data and machine-learning systems, full-stack builds, and computer vision." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b0c0f; --surface:#131419; --surface-2:#171922;
+    --line:rgba(236,231,219,.11); --line-2:rgba(236,231,219,.22);
+    --ink:#ece7db; --muted:rgba(236,231,219,.56); --faint:rgba(236,231,219,.32);
+    --coral:#f0611f; --coral-soft:#ff7a3c; --ok:#8ea96a;
+    --serif:'Fraunces',Georgia,serif;
+    --display:'Space Grotesk',system-ui,sans-serif;
+    --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+    line-height:1.6; -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;}
+  a{color:inherit;}
+  .wrap{max-width:1060px; margin:0 auto; padding:0 28px;}
+  .label{font-family:var(--display); font-size:.62rem; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--coral); font-weight:500;}
+  h1,h2,h3{font-family:var(--serif); font-weight:400; line-height:1.06; letter-spacing:-.01em; margin:0;}
+
+  /* top bar */
+  .top{position:sticky; top:0; z-index:10; backdrop-filter:blur(8px);
+    background:rgba(11,12,15,.72); border-bottom:1px solid var(--line);}
+  .top .wrap{display:flex; align-items:center; justify-content:space-between; height:58px;}
+  .brand{font-family:var(--display); font-weight:700; letter-spacing:.02em;}
+  .brand span{color:var(--coral);}
+  .top nav a{font-family:var(--display); font-size:.72rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--muted); text-decoration:none; margin-left:22px;}
+  .top nav a:hover{color:var(--ink);}
+  @media(max-width:620px){ .top nav a{margin-left:14px;} .top nav a.hide-sm{display:none;} }
+
+  /* hero */
+  .hero{padding:84px 0 48px;}
+  .hero h1{font-size:clamp(2.8rem,8vw,5rem); font-style:italic; margin:.22em 0 .3em;}
+  .hero .lede{font-size:1.16rem; max-width:48ch; color:var(--ink);}
+  .cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:30px;}
+  .btn{display:inline-flex; align-items:center; gap:8px; font-family:var(--display);
+    font-size:.82rem; letter-spacing:.03em; text-decoration:none; padding:11px 20px;
+    border:1px solid var(--line-2); border-radius:2px; transition:all .18s ease; color:var(--ink);}
+  .btn.primary{background:var(--coral); color:#120a05; border-color:var(--coral); font-weight:600;}
+  .btn.primary:hover{background:var(--coral-soft); border-color:var(--coral-soft);}
+  .btn.ghost:hover{border-color:var(--ink); background:rgba(236,231,219,.04);}
+  .btn.sm{padding:8px 14px; font-size:.76rem;}
+
+  section{padding:40px 0;}
+  .sec-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+    border-top:1px solid var(--line); padding-top:26px; margin-bottom:26px;}
+  .sec-head h2{font-size:1.5rem; font-style:italic;}
+
+  /* flagship card */
+  .flagship{display:grid; grid-template-columns:1.05fr 1fr; gap:0; border:1px solid var(--line);
+    border-radius:4px; overflow:hidden; background:var(--surface);}
+  @media(max-width:800px){ .flagship{grid-template-columns:1fr;} }
+  .flagship .shot{width:100%; height:100%; min-height:260px; object-fit:cover; display:block;
+    border-right:1px solid var(--line);}
+  @media(max-width:800px){ .flagship .shot{border-right:none; border-bottom:1px solid var(--line); min-height:0;} }
+  .flagship .body{padding:30px 32px;}
+  .flagship .tag{font-family:var(--display); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--coral);}
+  .flagship h3{font-size:1.9rem; font-style:italic; margin:10px 0 12px;}
+  .flagship p{color:var(--muted); margin:0 0 18px;}
+
+  /* project grid */
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media(max-width:720px){ .grid{grid-template-columns:1fr;} }
+  .card{border:1px solid var(--line); border-radius:4px; padding:24px 26px; background:var(--surface);
+    display:flex; flex-direction:column; transition:border-color .18s ease, transform .18s ease;}
+  .card:hover{border-color:var(--line-2); transform:translateY(-2px);}
+  .card .kic{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .card .dot{width:8px; height:8px; border-radius:50%; background:var(--coral);}
+  .card .kind{font-family:var(--display); font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);}
+  .card h3{font-size:1.3rem; margin-bottom:8px;}
+  .card p{color:var(--muted); font-size:.94rem; margin:0 0 16px; flex:1;}
+  .chips{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px;}
+  .chip{font-family:var(--display); font-size:.68rem; letter-spacing:.02em;
+    border:1px solid var(--line-2); border-radius:2px; padding:5px 10px; color:var(--muted);}
+  .links{display:flex; gap:9px; flex-wrap:wrap;}
+
+  /* also built */
+  .mini{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media(max-width:720px){ .mini{grid-template-columns:1fr;} }
+  .minicard{border:1px solid var(--line); border-radius:3px; padding:18px 20px; background:var(--surface);}
+  .minicard h4{font-family:var(--serif); font-weight:400; font-size:1.05rem; margin:0 0 5px;}
+  .minicard a{font-family:var(--serif);}
+  .minicard p{color:var(--muted); font-size:.85rem; margin:0 0 12px;}
+  .minicard .l{font-family:var(--display); font-size:.72rem; letter-spacing:.04em; color:var(--coral); text-decoration:none;}
+  .minicard .l:hover{text-decoration:underline;}
+
+  footer{border-top:1px solid var(--line); margin-top:40px; padding:44px 0 64px; color:var(--muted);}
+  footer a{color:var(--coral); text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+  .note{font-size:.82rem; color:var(--faint); margin-top:16px; max-width:64ch;}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap">
+  <span class="brand">SANI<span>.</span></span>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#more" class="hide-sm">More</a>
+    <a href="https://github.com/SaniMah">GitHub</a>
+    <a href="https://www.kaggle.com/saniwithanage">Kaggle</a>
+  </nav>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <div class="label">Sanithma Withanage</div>
+  <h1>I build systems that turn<br />messy signals into decisions.</h1>
+  <p class="lede">Mechatronics Engineering &amp; Computer Science at Monash University. I work across data pipelines, machine learning and full-stack engineering, with a focus on anomaly detection, computer vision and tools people can actually use.</p>
+  <div class="cta">
+    <a class="btn primary" href="#work">View the work &darr;</a>
+    <a class="btn ghost" href="https://github.com/SaniMah">GitHub</a>
+    <a class="btn ghost" href="https://www.kaggle.com/saniwithanage">Kaggle</a>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+<section id="work">
+  <div class="sec-head">
+    <h2>Selected work</h2>
+    <span class="label">Flagship</span>
+  </div>
+
+  <!-- flagship: Urban Sensor Monitor -->
+  <div class="flagship">
+    <img class="shot" src="assets/urban-sensor-monitor.jpg" alt="Urban Sensor Monitor - the Observatory map of Melbourne sensors." />
+    <div class="body">
+      <span class="tag">Full-stack / data platform / live</span>
+      <h3>Urban Sensor Monitor</h3>
+      <p>A spatial-intelligence platform that watches the health of a sensor fleet (the City of Melbourne pedestrian network). It learns each sensor's normal pattern, flags outages, flat-lines and off-baseline drift, maps the whole fleet in real time, and writes a weekly health report with a local language model. Detection is validated with precision and recall against injected faults. Deployed as a single Docker service.</p>
+      <div class="chips">
+        <span class="chip">React + TypeScript</span><span class="chip">FastAPI</span>
+        <span class="chip">PostgreSQL</span><span class="chip">Leaflet</span>
+        <span class="chip">ECharts</span><span class="chip">Docker</span>
+      </div>
+      <div class="links">
+        <a class="btn primary sm" href="https://urban-sensor-monitor.onrender.com">Live demo &rarr;</a>
+        <a class="btn ghost sm" href="https://sanimah.github.io/Urban_Sensor_Monitor/">Case study</a>
+        <a class="btn ghost sm" href="https://github.com/SaniMah/Urban_Sensor_Monitor">Code</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- grid of other strong projects -->
+  <div class="grid" style="margin-top:18px;">
+
+    <div class="card">
+      <div class="kic"><span class="dot"></span><span class="kind">Data pipeline / anomaly detection</span></div>
+      <h3>CanLog</h3>
+      <p>A CAN-bus log analyser: it loads candump captures, profiles each message ID's normal behaviour, and flags anomalies such as dropouts, timing drift and out-of-range values, backed by a PostgreSQL schema, a Streamlit dashboard and a local-LLM report. The same method as Urban Sensor Monitor, applied to vehicle-network data.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">PostgreSQL</span><span class="chip">Streamlit</span></div>
+      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/CanLog">Code</a></div>
+    </div>
+
+    <div class="card">
+      <div class="kic"><span class="dot"></span><span class="kind">Deep learning / medical imaging</span></div>
+      <h3>Brain Tumor Detection</h3>
+      <p>A deep-learning notebook that classifies brain MRI scans to detect the presence of tumors, taking a dataset of labelled scans through preprocessing, model training and evaluation.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">Computer Vision</span><span class="chip">Kaggle</span></div>
+      <div class="links"><a class="btn ghost sm" href="https://www.kaggle.com/code/saniwithanage/brain-tumor-detection">View on Kaggle &rarr;</a></div>
+    </div>
+
+    <div class="card">
+      <div class="kic"><span class="dot"></span><span class="kind">Machine learning / classification</span></div>
+      <h3>Heart Failure Prediction</h3>
+      <p>A machine-learning notebook that predicts heart-failure risk from clinical patient records, covering exploratory analysis, feature preparation, model training and evaluation on held-out data.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">Machine Learning</span><span class="chip">Classification</span><span class="chip">Kaggle</span></div>
+      <div class="links"><a class="btn ghost sm" href="https://www.kaggle.com/code/saniwithanage/heart-failure-prediction">View on Kaggle &rarr;</a></div>
+    </div>
+
+    <div class="card">
+      <div class="kic"><span class="dot"></span><span class="kind">Computer vision / real-time</span></div>
+      <h3>ASL Recognition</h3>
+      <p>Real-time American Sign Language letter recognition from a webcam feed, combining OpenCV for video, MediaPipe for hand tracking, and a TensorFlow model to classify the hand shapes live.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">MediaPipe</span><span class="chip">TensorFlow</span></div>
+      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/ASLRecognition">Code</a></div>
+    </div>
+
+    <div class="card">
+      <div class="kic"><span class="dot"></span><span class="kind">Reinforcement learning / games</span></div>
+      <h3>CarAI</h3>
+      <p>A driving game built in pygame, paired with a PyTorch agent trained to learn to play it from scratch. A hands-on exploration of training an agent against an environment you control end to end.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">pygame</span><span class="chip">Reinforcement Learning</span></div>
+      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/CarAI">Code</a></div>
+    </div>
+
+    <div class="card">
+      <div class="kic"><span class="dot"></span><span class="kind">Machine learning / computer vision</span></div>
+      <h3>Image Classifier</h3>
+      <p>An image-classification model in Python, training a neural network to sort images into categories and reporting its accuracy on a test set.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">Computer Vision</span></div>
+      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/ImageClassifier">Code</a></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="more">
+  <div class="sec-head">
+    <h2>Also built</h2>
+    <span class="label">Smaller tools</span>
+  </div>
+  <div class="mini">
+    <div class="minicard">
+      <h4><a href="https://github.com/SaniMah/Password-Checker">Password Checker</a></h4>
+      <p>A Python tool that scores password strength against common weakness rules.</p>
+      <a class="l" href="https://github.com/SaniMah/Password-Checker">Code &rarr;</a>
+    </div>
+    <div class="minicard">
+      <h4><a href="https://github.com/SaniMah/PDF-Merger">PDF Merger</a></h4>
+      <p>A Python utility that combines multiple PDF files into one.</p>
+      <a class="l" href="https://github.com/SaniMah/PDF-Merger">Code &rarr;</a>
+    </div>
+    <div class="minicard">
+      <h4><a href="https://github.com/SaniMah/SoccerDataAnalysis">Soccer Data Analysis</a></h4>
+      <p>Exploratory analysis of soccer datasets with the pandas library.</p>
+      <a class="l" href="https://github.com/SaniMah/SoccerDataAnalysis">Code &rarr;</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="label">Get in touch</div>
+  <p style="margin-top:12px; font-size:1.05rem; color:var(--ink);">
+    <a href="https://github.com/SaniMah">GitHub</a> &nbsp;/&nbsp;
+    <a href="https://www.kaggle.com/saniwithanage">Kaggle</a>
+  </p>
+  <p class="note">Sanithma Withanage - Mechatronics Engineering &amp; Computer Science, Monash University. Built with HTML and CSS; AI tools were used to help with layout and copy, reviewed before publishing.</p>
+</div></footer>
+
+</body>
+</html>

@@ -57,13 +57,38 @@
     border-top:1px solid var(--line); padding-top:26px; margin-bottom:26px;}
   .sec-head h2{font-size:1.5rem; font-style:italic;}
 
+  /* ---- carousel ---- */
+  .cov{position:relative; overflow:hidden; background:var(--surface-2);}
+  .cov .track{display:flex; height:100%; transition:transform .55s cubic-bezier(.22,1,.36,1);}
+  .cov .slide{min-width:100%; width:100%; display:block; object-fit:cover;}
+  .cov .ph{display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:6px; background:
+      radial-gradient(120% 140% at 15% 0%, rgba(240,97,31,.10), transparent 60%),
+      var(--surface-2);
+    color:var(--faint); text-align:center;}
+  .cov .ph b{font-family:var(--serif); font-style:italic; font-weight:400; font-size:1.2rem; color:var(--muted);}
+  .cov .ph span{font-family:var(--display); font-size:.56rem; letter-spacing:.22em; text-transform:uppercase;}
+  .cov .nav{position:absolute; top:50%; transform:translateY(-50%); z-index:3;
+    width:34px; height:34px; display:grid; place-items:center; cursor:pointer;
+    border:1px solid var(--line-2); border-radius:50%; background:rgba(11,12,15,.55);
+    color:var(--ink); font-size:1.1rem; line-height:1; opacity:0; transition:opacity .2s ease, background .2s ease;}
+  .cov:hover .nav{opacity:1;}
+  .cov .nav:hover{background:rgba(11,12,15,.85); border-color:var(--ink);}
+  .cov .nav.prev{left:10px;} .cov .nav.next{right:10px;}
+  .cov .dots{position:absolute; left:0; right:0; bottom:10px; z-index:3;
+    display:flex; gap:6px; justify-content:center;}
+  .cov .dot{width:6px; height:6px; border-radius:50%; border:0; padding:0; cursor:pointer;
+    background:rgba(236,231,219,.35); transition:background .2s ease, width .2s ease;}
+  .cov .dot.on{background:var(--coral); width:16px; border-radius:3px;}
+  @media(hover:none){ .cov .nav{opacity:1;} }
+
   /* flagship card */
   .flagship{display:grid; grid-template-columns:1.05fr 1fr; gap:0; border:1px solid var(--line);
     border-radius:4px; overflow:hidden; background:var(--surface);}
   @media(max-width:800px){ .flagship{grid-template-columns:1fr;} }
-  .flagship .shot{width:100%; height:100%; min-height:260px; object-fit:cover; display:block;
-    border-right:1px solid var(--line);}
-  @media(max-width:800px){ .flagship .shot{border-right:none; border-bottom:1px solid var(--line); min-height:0;} }
+  .flagship .cov{min-height:320px; border-right:1px solid var(--line);}
+  .flagship .cov .slide{height:100%;}
+  @media(max-width:800px){ .flagship .cov{border-right:none; border-bottom:1px solid var(--line); min-height:0; aspect-ratio:16/10;} }
   .flagship .body{padding:30px 32px;}
   .flagship .tag{font-family:var(--display); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--coral);}
   .flagship h3{font-size:1.9rem; font-style:italic; margin:10px 0 12px;}
@@ -72,11 +97,14 @@
   /* project grid */
   .grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
   @media(max-width:720px){ .grid{grid-template-columns:1fr;} }
-  .card{border:1px solid var(--line); border-radius:4px; padding:24px 26px; background:var(--surface);
+  .card{border:1px solid var(--line); border-radius:4px; overflow:hidden; background:var(--surface);
     display:flex; flex-direction:column; transition:border-color .18s ease, transform .18s ease;}
   .card:hover{border-color:var(--line-2); transform:translateY(-2px);}
+  .card .cov{aspect-ratio:16/9; width:100%; border-bottom:1px solid var(--line);}
+  .card .cov .slide{height:100%;}
+  .card .body{padding:22px 24px 24px; display:flex; flex-direction:column; flex:1;}
   .card .kic{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
-  .card .dot{width:8px; height:8px; border-radius:50%; background:var(--coral);}
+  .card .dot-k{width:8px; height:8px; border-radius:50%; background:var(--coral);}
   .card .kind{font-family:var(--display); font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);}
   .card h3{font-size:1.3rem; margin-bottom:8px;}
   .card p{color:var(--muted); font-size:.94rem; margin:0 0 16px; flex:1;}
@@ -134,7 +162,16 @@
 
   <!-- flagship: Urban Sensor Monitor -->
   <div class="flagship">
-    <img class="shot" src="assets/urban-sensor-monitor.jpg" alt="Urban Sensor Monitor - the Observatory map of Melbourne sensors." />
+    <div class="cov" data-auto="1">
+      <div class="track">
+        <img class="slide" src="assets/urban-sensor-monitor/1.jpg" alt="Urban Sensor Monitor - the Observatory map of Melbourne sensors." />
+        <img class="slide" src="assets/urban-sensor-monitor/2.jpg" alt="Urban Sensor Monitor - sensor intelligence detail view." />
+        <img class="slide" src="assets/urban-sensor-monitor/3.jpg" alt="Urban Sensor Monitor - the incidents screen." />
+      </div>
+      <button class="nav prev" aria-label="Previous">&lsaquo;</button>
+      <button class="nav next" aria-label="Next">&rsaquo;</button>
+      <div class="dots"></div>
+    </div>
     <div class="body">
       <span class="tag">Full-stack / data platform / live</span>
       <h3>Urban Sensor Monitor</h3>
@@ -156,51 +193,187 @@
   <div class="grid" style="margin-top:18px;">
 
     <div class="card">
-      <div class="kic"><span class="dot"></span><span class="kind">Data pipeline / anomaly detection</span></div>
-      <h3>CanLog</h3>
-      <p>A CAN-bus log analyser: it loads candump captures, profiles each message ID's normal behaviour, and flags anomalies such as dropouts, timing drift and out-of-range values, backed by a PostgreSQL schema, a Streamlit dashboard and a local-LLM report. The same method as Urban Sensor Monitor, applied to vehicle-network data.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">PostgreSQL</span><span class="chip">Streamlit</span></div>
-      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/CanLog">Code</a></div>
+      <div class="cov">
+        <div class="track">
+          <svg class="slide" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CanLog - CAN bus message timing with a detected dropout.">
+            <defs>
+              <linearGradient id="clbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#171922"/><stop offset="1" stop-color="#0b0c0f"/></linearGradient>
+              <pattern id="cltick" width="26" height="20" patternUnits="userSpaceOnUse"><rect x="0" y="5" width="2.4" height="10" rx="1" fill="rgba(236,231,219,0.34)"/></pattern>
+            </defs>
+            <rect width="640" height="360" fill="url(#clbg)"/>
+            <g>
+              <line x1="40" y1="74"  x2="600" y2="74"  stroke="rgba(236,231,219,0.10)"/><rect x="40" y="65"  width="560" height="18" fill="url(#cltick)"/>
+              <line x1="40" y1="120" x2="600" y2="120" stroke="rgba(236,231,219,0.10)"/><rect x="40" y="111" width="560" height="18" fill="url(#cltick)"/>
+              <line x1="40" y1="166" x2="600" y2="166" stroke="rgba(236,231,219,0.10)"/>
+              <rect x="40" y="157" width="252" height="18" fill="url(#cltick)"/><rect x="428" y="157" width="172" height="18" fill="url(#cltick)"/>
+              <line x1="40" y1="212" x2="600" y2="212" stroke="rgba(236,231,219,0.10)"/><rect x="40" y="203" width="560" height="18" fill="url(#cltick)"/>
+              <line x1="40" y1="258" x2="600" y2="258" stroke="rgba(236,231,219,0.10)"/><rect x="40" y="249" width="560" height="18" fill="url(#cltick)"/>
+            </g>
+            <rect x="296" y="150" width="128" height="32" rx="4" fill="rgba(240,97,31,0.12)" stroke="#f0611f" stroke-width="1.6" stroke-dasharray="5 4"/>
+            <circle cx="360" cy="166" r="4.5" fill="#f0611f"/>
+            <text x="298" y="140" fill="#f0611f" font-family="'Space Grotesk',system-ui,sans-serif" font-size="11" letter-spacing="2">DROPOUT</text>
+            <text x="40" y="330" fill="rgba(236,231,219,0.5)" font-family="'Space Grotesk',system-ui,sans-serif" font-size="13" letter-spacing="3.5">CAN BUS &#183; ANOMALY</text>
+          </svg>
+        </div>
+      </div>
+      <div class="body">
+        <div class="kic"><span class="dot-k"></span><span class="kind">Data pipeline / anomaly detection</span></div>
+        <h3>CanLog</h3>
+        <p>A CAN-bus log analyser: it loads candump captures, profiles each message ID's normal behaviour, and flags anomalies such as dropouts, timing drift and out-of-range values, backed by a PostgreSQL schema, a Streamlit dashboard and a local-LLM report. The same method as Urban Sensor Monitor, applied to vehicle-network data.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">pandas</span><span class="chip">PostgreSQL</span><span class="chip">Streamlit</span></div>
+        <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/CanLog">Code</a></div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="kic"><span class="dot"></span><span class="kind">Deep learning / medical imaging</span></div>
-      <h3>Brain Tumor Detection</h3>
-      <p>A deep-learning notebook that classifies brain MRI scans to detect the presence of tumors, taking a dataset of labelled scans through preprocessing, model training and evaluation.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">Computer Vision</span><span class="chip">Kaggle</span></div>
-      <div class="links"><a class="btn ghost sm" href="https://www.kaggle.com/code/saniwithanage/brain-tumor-detection">View on Kaggle &rarr;</a></div>
+      <div class="cov">
+        <div class="track">
+          <img class="slide" src="assets/brain-tumor/1.png" alt="Brain Tumor Detection - model predictions on MRI scans, labelled correct or incorrect." />
+          <img class="slide" src="assets/brain-tumor/2.png" alt="Brain Tumor Detection - a training batch of labelled MRI scans." />
+          <img class="slide" src="assets/brain-tumor/3.png" alt="Brain Tumor Detection - the labelled dataset index." />
+        </div>
+      </div>
+      <div class="body">
+        <div class="kic"><span class="dot-k"></span><span class="kind">Deep learning / medical imaging</span></div>
+        <h3>Brain Tumor Detection</h3>
+        <p>A deep-learning notebook that classifies brain MRI scans to detect the presence of tumors, taking a dataset of labelled scans through preprocessing, model training and evaluation.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">Computer Vision</span><span class="chip">Kaggle</span></div>
+        <div class="links"><a class="btn ghost sm" href="https://www.kaggle.com/code/saniwithanage/brain-tumor-detection">View on Kaggle &rarr;</a></div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="kic"><span class="dot"></span><span class="kind">Machine learning / classification</span></div>
-      <h3>Heart Failure Prediction</h3>
-      <p>A machine-learning notebook that predicts heart-failure risk from clinical patient records, covering exploratory analysis, feature preparation, model training and evaluation on held-out data.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">Machine Learning</span><span class="chip">Classification</span><span class="chip">Kaggle</span></div>
-      <div class="links"><a class="btn ghost sm" href="https://www.kaggle.com/code/saniwithanage/heart-failure-prediction">View on Kaggle &rarr;</a></div>
+      <div class="cov">
+        <div class="track">
+          <svg class="slide" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Heart Failure Prediction - an ECG signal motif.">
+            <defs>
+              <linearGradient id="hfbg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#171922"/><stop offset="1" stop-color="#0b0c0f"/>
+              </linearGradient>
+              <pattern id="hfgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M40 0 H0 V40" fill="none" stroke="rgba(236,231,219,0.05)" stroke-width="1"/>
+              </pattern>
+              <filter id="hfglow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3.2" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <rect width="640" height="360" fill="url(#hfbg)"/>
+            <rect width="640" height="360" fill="url(#hfgrid)"/>
+            <line x1="0" y1="200" x2="640" y2="200" stroke="rgba(236,231,219,0.12)" stroke-width="1"/>
+            <path d="M0 200 H40 L50 192 L60 200 H80 L88 210 L96 145 L104 220 L112 200 H140 L155 182 L170 200 H200 L240 200 L250 192 L260 200 H280 L288 210 L296 145 L304 220 L312 200 H340 L355 182 L370 200 H400 L440 200 L450 192 L460 200 H480 L488 210 L496 145 L504 220 L512 200 H540 L555 182 L570 200 H640"
+              fill="none" stroke="#f0611f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" filter="url(#hfglow)"/>
+            <text x="30" y="312" fill="rgba(236,231,219,0.5)" font-family="'Space Grotesk',system-ui,sans-serif" font-size="13" letter-spacing="3.5">ECG &#183; RISK MODEL</text>
+          </svg>
+        </div>
+      </div>
+      <div class="body">
+        <div class="kic"><span class="dot-k"></span><span class="kind">Machine learning / classification</span></div>
+        <h3>Heart Failure Prediction</h3>
+        <p>A machine-learning notebook that predicts heart-failure risk from clinical patient records, covering exploratory analysis, feature preparation, model training and evaluation on held-out data.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Machine Learning</span><span class="chip">Classification</span><span class="chip">Kaggle</span></div>
+        <div class="links"><a class="btn ghost sm" href="https://www.kaggle.com/code/saniwithanage/heart-failure-prediction">View on Kaggle &rarr;</a></div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="kic"><span class="dot"></span><span class="kind">Computer vision / real-time</span></div>
-      <h3>ASL Recognition</h3>
-      <p>Real-time American Sign Language letter recognition from a webcam feed, combining OpenCV for video, MediaPipe for hand tracking, and a TensorFlow model to classify the hand shapes live.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">MediaPipe</span><span class="chip">TensorFlow</span></div>
-      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/ASLRecognition">Code</a></div>
+      <div class="cov">
+        <div class="track">
+          <svg class="slide" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ASL Recognition - a hand-landmark skeleton from hand tracking.">
+            <defs>
+              <linearGradient id="aslbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#171922"/><stop offset="1" stop-color="#0b0c0f"/></linearGradient>
+            </defs>
+            <rect width="640" height="360" fill="url(#aslbg)"/>
+            <g stroke="rgba(236,231,219,0.40)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M300 310 L250 285 M300 310 L275 230 M275 230 L310 222 M310 222 L345 228 M345 228 L378 242 M300 310 L378 242"/>
+              <path d="M250 285 L215 255 L190 230 L170 208"/>
+              <path d="M275 230 L268 180 L263 145 L258 115"/>
+              <path d="M310 222 L312 168 L314 130 L316 98"/>
+              <path d="M345 228 L352 178 L357 142 L361 112"/>
+              <path d="M378 242 L392 205 L401 178 L409 152"/>
+            </g>
+            <g fill="rgba(236,231,219,0.55)">
+              <circle cx="300" cy="310" r="5.5"/>
+              <circle cx="250" cy="285" r="4"/><circle cx="215" cy="255" r="4"/><circle cx="190" cy="230" r="4"/>
+              <circle cx="275" cy="230" r="4"/><circle cx="268" cy="180" r="4"/><circle cx="263" cy="145" r="4"/>
+              <circle cx="310" cy="222" r="4"/><circle cx="312" cy="168" r="4"/><circle cx="314" cy="130" r="4"/>
+              <circle cx="345" cy="228" r="4"/><circle cx="352" cy="178" r="4"/><circle cx="357" cy="142" r="4"/>
+              <circle cx="378" cy="242" r="4"/><circle cx="392" cy="205" r="4"/><circle cx="401" cy="178" r="4"/>
+            </g>
+            <g fill="#f0611f">
+              <circle cx="170" cy="208" r="5"/><circle cx="258" cy="115" r="5"/><circle cx="316" cy="98" r="5"/><circle cx="361" cy="112" r="5"/><circle cx="409" cy="152" r="5"/>
+            </g>
+            <text x="40" y="330" fill="rgba(236,231,219,0.5)" font-family="'Space Grotesk',system-ui,sans-serif" font-size="13" letter-spacing="3.5">HAND LANDMARKS</text>
+          </svg>
+        </div>
+      </div>
+      <div class="body">
+        <div class="kic"><span class="dot-k"></span><span class="kind">Computer vision / real-time</span></div>
+        <h3>ASL Recognition</h3>
+        <p>Real-time American Sign Language letter recognition from a webcam feed, combining OpenCV for video, MediaPipe for hand tracking, and a TensorFlow model to classify the hand shapes live.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">MediaPipe</span><span class="chip">TensorFlow</span></div>
+        <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/ASLRecognition">Code</a></div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="kic"><span class="dot"></span><span class="kind">Reinforcement learning / games</span></div>
-      <h3>CarAI</h3>
-      <p>A driving game built in pygame, paired with a PyTorch agent trained to learn to play it from scratch. A hands-on exploration of training an agent against an environment you control end to end.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">pygame</span><span class="chip">Reinforcement Learning</span></div>
-      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/CarAI">Code</a></div>
+      <div class="cov">
+        <div class="track">
+          <img class="slide" src="assets/carai/1.webp" alt="CarAI - the pygame driving game with a NEAT agent, showing generation and score." />
+        </div>
+      </div>
+      <div class="body">
+        <div class="kic"><span class="dot-k"></span><span class="kind">Reinforcement learning / games</span></div>
+        <h3>CarAI</h3>
+        <p>A driving game built in pygame, paired with a PyTorch agent trained to learn to play it from scratch. A hands-on exploration of training an agent against an environment you control end to end.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">PyTorch</span><span class="chip">pygame</span><span class="chip">Reinforcement Learning</span></div>
+        <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/CarAI">Code</a></div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="kic"><span class="dot"></span><span class="kind">Machine learning / computer vision</span></div>
-      <h3>Image Classifier</h3>
-      <p>An image-classification model in Python, training a neural network to sort images into categories and reporting its accuracy on a test set.</p>
-      <div class="chips"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">Computer Vision</span></div>
-      <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/ImageClassifier">Code</a></div>
+      <div class="cov">
+        <div class="track">
+          <svg class="slide" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Image Classifier - a grid of image tiles with one classified.">
+            <defs>
+              <linearGradient id="icbg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#171922"/><stop offset="1" stop-color="#0b0c0f"/>
+              </linearGradient>
+            </defs>
+            <rect width="640" height="360" fill="url(#icbg)"/>
+            <g fill="#131419" stroke="rgba(236,231,219,0.12)" stroke-width="1">
+              <rect x="40"  y="50"  width="128" height="76" rx="6"/>
+              <rect x="184" y="50"  width="128" height="76" rx="6"/>
+              <rect x="328" y="50"  width="128" height="76" rx="6"/>
+              <rect x="472" y="50"  width="128" height="76" rx="6"/>
+              <rect x="40"  y="142" width="128" height="76" rx="6"/>
+              <rect x="184" y="142" width="128" height="76" rx="6"/>
+              <rect x="472" y="142" width="128" height="76" rx="6"/>
+              <rect x="40"  y="234" width="128" height="76" rx="6"/>
+              <rect x="184" y="234" width="128" height="76" rx="6"/>
+              <rect x="328" y="234" width="128" height="76" rx="6"/>
+              <rect x="472" y="234" width="128" height="76" rx="6"/>
+            </g>
+            <g fill="rgba(236,231,219,0.14)">
+              <circle cx="104" cy="88"  r="11"/><circle cx="248" cy="88"  r="11"/><circle cx="392" cy="88" r="11"/><circle cx="536" cy="88" r="11"/>
+              <circle cx="104" cy="180" r="11"/><circle cx="248" cy="180" r="11"/><circle cx="536" cy="180" r="11"/>
+              <circle cx="104" cy="272" r="11"/><circle cx="248" cy="272" r="11"/><circle cx="392" cy="272" r="11"/><circle cx="536" cy="272" r="11"/>
+            </g>
+            <rect x="328" y="142" width="128" height="76" rx="6" fill="#171922" stroke="#f0611f" stroke-width="2.6"/>
+            <circle cx="392" cy="180" r="11" fill="rgba(240,97,31,0.55)"/>
+            <rect x="334" y="148" width="50" height="19" rx="3" fill="#f0611f"/>
+            <text x="359" y="162" fill="#120a05" font-family="'Space Grotesk',system-ui,sans-serif" font-size="11" font-weight="600" letter-spacing="0.5" text-anchor="middle">0.98</text>
+            <text x="40" y="332" fill="rgba(236,231,219,0.5)" font-family="'Space Grotesk',system-ui,sans-serif" font-size="13" letter-spacing="3.5">IMAGE &#183; CLASSIFIER</text>
+          </svg>
+        </div>
+      </div>
+      <div class="body">
+        <div class="kic"><span class="dot-k"></span><span class="kind">Machine learning / computer vision</span></div>
+        <h3>Image Classifier</h3>
+        <p>An image-classification model in Python, training a neural network to sort images into categories and reporting its accuracy on a test set.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">Deep Learning</span><span class="chip">Computer Vision</span></div>
+        <div class="links"><a class="btn ghost sm" href="https://github.com/SaniMah/ImageClassifier">Code</a></div>
+      </div>
     </div>
 
   </div>
@@ -240,6 +413,47 @@
   </p>
   <p class="note">Sanithma Withanage - Mechatronics Engineering &amp; Computer Science, Monash University. Built with HTML and CSS; AI tools were used to help with layout and copy, reviewed before publishing.</p>
 </div></footer>
+
+<script>
+  document.querySelectorAll('.cov').forEach(function(cov){
+    var track = cov.querySelector('.track');
+    var slides = Array.prototype.slice.call(track.children);
+    var dotsWrap = cov.querySelector('.dots');
+    if (slides.length <= 1){
+      cov.querySelectorAll('.nav, .dots').forEach(function(e){ e.remove(); });
+      return;
+    }
+    var i = 0;
+    slides.forEach(function(_, n){
+      var d = document.createElement('button');
+      d.className = 'dot' + (n === 0 ? ' on' : '');
+      d.setAttribute('aria-label', 'Slide ' + (n + 1));
+      d.addEventListener('click', function(){ go(n); });
+      dotsWrap.appendChild(d);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+    function go(n){
+      i = (n + slides.length) % slides.length;
+      track.style.transform = 'translateX(-' + (i * 100) + '%)';
+      dots.forEach(function(d, x){ d.classList.toggle('on', x === i); });
+    }
+    var prev = cov.querySelector('.prev'), next = cov.querySelector('.next');
+    if (prev) prev.addEventListener('click', function(){ go(i - 1); });
+    if (next) next.addEventListener('click', function(){ go(i + 1); });
+    var sx = null;
+    track.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend', function(e){
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) go(dx < 0 ? i + 1 : i - 1);
+      sx = null;
+    });
+    if (cov.dataset.auto){
+      var t = setInterval(function(){ go(i + 1); }, 4500);
+      cov.addEventListener('mouseenter', function(){ clearInterval(t); });
+    }
+  });
+</script>
 
 </body>
 </html>
